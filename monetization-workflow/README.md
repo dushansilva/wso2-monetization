@@ -1,0 +1,2 @@
+### Introduction
+This contains  an extension to the default subscription workflow executor. It will handle the monetized subscription process by redirecting the subscriber to stripe in the subscription create flow and on subscription complete flow it will create the required details in stripe. Below steps are shown how to configure extension after building the project.

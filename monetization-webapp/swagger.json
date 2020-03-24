@@ -1,0 +1,396 @@
+{
+  "swagger" : "2.0",
+  "info" : {
+    "description" : "This document specifies a **RESTful API** for WSO2 **API Manager** - Store.\n\nIt is written with [swagger 2](http://swagger.io/).\n",
+    "version" : "v1.0",
+    "title" : "WSO2 API Manager - Store",
+    "contact" : {
+      "name" : "WSO2",
+      "url" : "http://wso2.com/products/api-manager/",
+      "email" : "architecture@wso2.com"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host" : "apis.wso2.com",
+  "basePath" : "/api/wso2/monetization",
+  "schemes" : [ "https" ],
+  "consumes" : [ "application/json" ],
+  "produces" : [ "application/json" ],
+  "paths" : {
+    "/subscriptions/complete-checkout" : {
+      "post" : {
+        "tags" : [ "Stripe" ],
+        "summary" : "Complete stripe checkout process\n",
+        "description" : "The endpoint which is called to complete a monatized subscription process. Stripe checkout will redirect to the\ndevportal and then this is called via devportal frontend.\n",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Complete checkout object.\n",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/CompleteCheckoutRequestObject"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK.\n"
+          },
+          "400" : {
+            "description" : "Bad Request.\nInvalid request or validation error\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "404" : {
+            "description" : "Not Found.\nThe resource to be updated does not exist.\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "412" : {
+            "description" : "Precondition Failed.\nThe request has not been performed because one of the preconditions is not met.\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "OAuth2Security" : [ ]
+        } ],
+        "x-wso2-curl" : "curl https://localhost:9443/api/wso2/monetization/subscriptions/complete-checkout",
+        "x-wso2-request" : "POST https://localhost:9443/api/wso2/monetization/subscriptions/complete-checkout\n"
+      }
+    },
+    "/stripe/update-stripe-card" : {
+      "post" : {
+        "tags" : [ "Stripe" ],
+        "summary" : "Update customer card details\n",
+        "description" : "The endpoint which is called to update a the card details of a customer\n",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "Complete checkout object.\n",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/definitions/UpdateStripeCardRequestObject"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK.\n"
+          },
+          "400" : {
+            "description" : "Bad Request.\nInvalid request or validation error\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "404" : {
+            "description" : "Not Found.\nThe resource to be updated does not exist.\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "412" : {
+            "description" : "Precondition Failed.\nThe request has not been performed because one of the preconditions is not met.\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "OAuth2Security" : [ ]
+        } ],
+        "x-wso2-curl" : "curl https://localhost:9443/api/wso2/monetization/subscriptions/update-stripe-card",
+        "x-wso2-request" : "GET https://localhost:9443/api/wso2/monetization/subscriptions/complete-checkout\n"
+      }
+    },
+    "/stripe/setup-card-session/{apiId}" : {
+      "post" : {
+        "tags" : [ "Stripe" ],
+        "summary" : "Start card updating session\n",
+        "description" : "The endpoint which is called to start update a the card details session\n",
+        "parameters" : [ {
+          "name" : "apiId",
+          "in" : "path",
+          "description" : "**API ID** consisting of the **UUID** of the API.\n",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK.\n",
+            "schema" : {
+              "$ref" : "#/definitions/SetupCardSessionResponse"
+            }
+          },
+          "400" : {
+            "description" : "Bad Request.\nInvalid request or validation error\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "404" : {
+            "description" : "Not Found.\nThe resource to be updated does not exist.\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "412" : {
+            "description" : "Precondition Failed.\nThe request has not been performed because one of the preconditions is not met.\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "OAuth2Security" : [ ]
+        } ],
+        "x-wso2-curl" : "curl https://localhost:9443/api/wso2/monetization/stripe/setup-card-session",
+        "x-wso2-request" : "GET https://localhost:9443/api/wso2/monetization/stripe/setup-card-session\n"
+      }
+    },
+    "/stripe/billing-details" : {
+      "get" : {
+        "tags" : [ "Stripe" ],
+        "summary" : "get stripe billing details\n",
+        "description" : "The endpoint which is called to get card/billing details\n",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "OK.\n",
+            "schema" : {
+              "$ref" : "#/definitions/StripeCardDetailsResponse"
+            }
+          },
+          "400" : {
+            "description" : "Bad Request.\nInvalid request or validation error\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "404" : {
+            "description" : "Not Found.\nThe resource to be updated does not exist.\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "412" : {
+            "description" : "Precondition Failed.\nThe request has not been performed because one of the preconditions is not met.\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "OAuth2Security" : [ ]
+        } ],
+        "x-wso2-curl" : "curl https://localhost:9443/api/wso2/monetization/stripe/billing-details",
+        "x-wso2-request" : "GET https://localhost:9443/api/wso2/monetization/stripe/billing-details\n"
+      }
+    },
+    "/stripe/webhook/{webhookKey}" : {
+      "post" : {
+        "tags" : [ "Stripe" ],
+        "summary" : "get stripe billing details\n",
+        "description" : "The endpoint which is called to get card/billing details\n",
+        "parameters" : [ {
+          "in" : "body",
+          "name" : "body",
+          "description" : "webhook.\n",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "webhookKey",
+          "in" : "path",
+          "description" : "webhook key corresponding to key entered in tenant-conf.json\n",
+          "required" : true,
+          "type" : "string"
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK.\n",
+            "schema" : {
+              "$ref" : "#/definitions/StripeCardDetailsResponse"
+            }
+          },
+          "400" : {
+            "description" : "Bad Request.\nInvalid request or validation error\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "404" : {
+            "description" : "Not Found.\nThe resource to be updated does not exist.\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          },
+          "412" : {
+            "description" : "Precondition Failed.\nThe request has not been performed because one of the preconditions is not met.\n",
+            "schema" : {
+              "$ref" : "#/definitions/Error"
+            }
+          }
+        },
+        "security" : [ {
+          "OAuth2Security" : [ ]
+        } ],
+        "x-wso2-curl" : "curl https://localhost:9443/api/wso2/monetization/stripe/webhook/keyname",
+        "x-wso2-request" : "GET https://localhost:9443/api/wso2/monetization/stripe/webhook\n"
+      }
+    }
+  },
+  "securityDefinitions" : {
+    "OAuth2Security" : {
+      "type" : "oauth2",
+      "tokenUrl" : "https://localhost:9443/token",
+      "flow" : "password",
+      "scopes" : {
+        "openid" : "Authorize access to user details",
+        "apim:subscribe" : "Subscribe API",
+        "apim:api_key" : "Generate API Keys",
+        "apim:app_update" : "Update an application",
+        "apim:app_manage" : "Manage application",
+        "apim:sub_manage" : "Manage subscriptions",
+        "apim:self-signup" : "Self Sign-up",
+        "apim:dedicated_gateway" : "Updating dedicated Gateway",
+        "apim:store_settings" : "Retrieve store settings",
+        "apim:sub_alert_manage" : "Retrieve, subscribe and configure store alert types"
+      }
+    }
+  },
+  "definitions" : {
+    "Error" : {
+      "required" : [ "code", "message" ],
+      "properties" : {
+        "code" : {
+          "type" : "integer",
+          "format" : "int64"
+        },
+        "message" : {
+          "type" : "string",
+          "description" : "Error message."
+        },
+        "description" : {
+          "type" : "string",
+          "description" : "A detail description about the error message.\n"
+        },
+        "moreInfo" : {
+          "type" : "string",
+          "description" : "Preferably an url with more details about the error.\n"
+        },
+        "error" : {
+          "type" : "array",
+          "description" : "If there are more than one error list them out.\nFor example, list out validation errors by each field.\n",
+          "items" : {
+            "$ref" : "#/definitions/ErrorListItem"
+          }
+        }
+      },
+      "title" : "Error object returned with 4XX HTTP status"
+    },
+    "ErrorListItem" : {
+      "required" : [ "code", "message" ],
+      "properties" : {
+        "code" : {
+          "type" : "string"
+        },
+        "message" : {
+          "type" : "string",
+          "description" : "Description about individual errors occurred\n"
+        }
+      },
+      "title" : "Description of individual errors that may have occurred during a request."
+    },
+    "CompleteCheckoutRequestObject" : {
+      "required" : [ "sessionId", "workflowReferenceId" ],
+      "properties" : {
+        "sessionId" : {
+          "type" : "string",
+          "description" : "sessionId of session created in stripe"
+        },
+        "workflowReferenceId" : {
+          "type" : "string",
+          "description" : "workflow external reference id stored to indentify a workflow"
+        }
+      },
+      "title" : "Complete checkout request object"
+    },
+    "UpdateStripeCardRequestObject" : {
+      "required" : [ "sessionId" ],
+      "properties" : {
+        "sessionId" : {
+          "type" : "string",
+          "description" : "sessionId of session created in stripe"
+        }
+      },
+      "title" : "Update stripe card"
+    },
+    "SetupCardSessionResponse" : {
+      "properties" : {
+        "sessionId" : {
+          "type" : "string",
+          "description" : "sessionId of session created in stripe"
+        },
+        "stripePublishableKey" : {
+          "type" : "string",
+          "description" : "publishable key of the platform account"
+        }
+      },
+      "title" : "Setup session response object"
+    },
+    "StripeCardDetailsResponse" : {
+      "properties" : {
+        "brand" : {
+          "type" : "string",
+          "description" : "card type"
+        },
+        "expMonth" : {
+          "type" : "number",
+          "description" : "expiry month"
+        },
+        "expYear" : {
+          "type" : "number",
+          "description" : "expiry year"
+        },
+        "last4" : {
+          "type" : "string",
+          "description" : "last 4 digits of the card"
+        }
+      },
+      "title" : "Billing details object"
+    },
+    "WebhookEvent" : {
+      "properties" : {
+        "event" : {
+          "type" : "object",
+          "description" : "event",
+          "properties" : { }
+        }
+      },
+      "title" : "web hook"
+    }
+  },
+  "parameters" : {
+    "apiId" : {
+      "name" : "apiId",
+      "in" : "path",
+      "description" : "**API ID** consisting of the **UUID** of the API.\n",
+      "required" : true,
+      "type" : "string"
+    },
+    "webhookKey" : {
+      "name" : "webhookKey",
+      "in" : "path",
+      "description" : "webhook key corresponding to key entered in tenant-conf.json\n",
+      "required" : true,
+      "type" : "string"
+    }
+  }
+}

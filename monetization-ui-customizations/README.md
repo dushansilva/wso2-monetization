@@ -1,0 +1,6 @@
+### Introduction
+This contains the UI customizations for the wso2 devportal and login. ```monetization-ui-customizations/src/main/resources/devportal``` contains all devportal source and ```monetization-ui-customizations/src/main/resources/devportal/override``` all the react js and jsx that were overriden or added during  the customization process. ```monetization-ui-customizations/src/main/resources/devportal/site/public/theme/defaultTheme.js``` contains all the theme related configs such as colors,fonts, configarable logos/images etc. More information about devportal theming and customizations can be found [here](https://apim.docs.wso2.com/en/3.0.0/Learn/ConsumeAPI/Customizations/CustomizingTheDeveloperPortal/overriding-developer-portal-theme/) <br>
+
+```monetization-ui-customizations/src/main/resources/login``` contains all the files related login pages customizations
+
+For the components that have been overridden we have added ```Start @monetization custom addition``` at the point where we have added a custom addition to that file to make it easier to spot the differences from the original file when maintaining it.

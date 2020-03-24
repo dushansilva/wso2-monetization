@@ -1,0 +1,453 @@
+#   Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+################################################################################
+
+swagger: '2.0'
+######################################################
+# Prolog
+######################################################
+info:
+  version: "v1.0"
+  title: "WSO2 API Manager - Store"
+  description: |
+    This document specifies a **RESTful API** for WSO2 **API Manager** - Store.
+
+    It is written with [swagger 2](http://swagger.io/).
+
+  contact:
+    name: "WSO2"
+    url: "http://wso2.com/products/api-manager/"
+    email: "architecture@wso2.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+
+######################################################
+# The fixed parts of the URLs of the API
+######################################################
+
+# The schemes supported by the API
+schemes:
+  - https
+
+# The domain of the API.
+# This is configured by the customer during deployment.
+# The given host is just an example.
+host: apis.wso2.com
+
+# The base path of the API.
+# Will be prefixed to all paths.
+basePath: /api/wso2/monetization
+
+# The following media types can be passed as input in message bodies of the API.
+# The actual media type must be specified in the Content-Type header field of the request.
+# The default is json, i.e. the Content-Type header is not needed to
+# be set, but supporting it serves extensibility.
+consumes:
+  - application/json
+
+# The following media types may be passed as output in message bodies of the API.
+# The media type(s) consumable by the requestor is specified in the Accept header field
+# of the corresponding request.
+# The actual media type returned will be specfied in the Content-Type header field
+# of the of the response.
+# The default of the Accept header is json, i.e. there is not needed to
+# set the value, but supporting it serves extensibility.
+produces:
+  - application/json
+
+securityDefinitions:
+  OAuth2Security:
+    type: oauth2
+    flow: password
+    tokenUrl: https://localhost:9443/token
+    scopes:
+      openid: Authorize access to user details
+      apim:subscribe: Subscribe API
+      apim:api_key: Generate API Keys
+      apim:app_update: Update an application
+      apim:app_manage: Manage application
+      apim:sub_manage: Manage subscriptions
+      apim:self-signup: Self Sign-up
+      apim:dedicated_gateway: Updating dedicated Gateway
+      apim:store_settings: Retrieve store settings
+      apim:sub_alert_manage: Retrieve, subscribe and configure store alert types
+
+######################################################
+# The "API Collection" resource APIs
+######################################################
+paths:
+  /subscriptions/complete-checkout:
+
+    #-----------------------------------------------------
+    # Retrieving the list of all APIs qualifying under a given search condition
+    #-----------------------------------------------------
+    post:
+      security:
+        - OAuth2Security: []
+      x-wso2-curl: "curl https://localhost:9443/api/wso2/monetization/subscriptions/complete-checkout"
+      x-wso2-request: |
+        POST https://localhost:9443/api/wso2/monetization/subscriptions/complete-checkout
+      summary: |
+        Complete stripe checkout process
+      description: |
+        The endpoint which is called to complete a monatized subscription process. Stripe checkout will redirect to the
+        devportal and then this is called via devportal frontend.
+      tags:
+        - Stripe
+      parameters:
+        - in: body
+          name: body
+          description: |
+            Complete checkout object.
+          required: true
+          schema:
+            $ref: '#/definitions/CompleteCheckoutRequestObject'
+      responses:
+        200:
+          description: |
+            OK.
+        400:
+          description: |
+            Bad Request.
+            Invalid request or validation error
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: |
+            Not Found.
+            The resource to be updated does not exist.
+          schema:
+            $ref: '#/definitions/Error'
+        412:
+          description: |
+            Precondition Failed.
+            The request has not been performed because one of the preconditions is not met.
+          schema:
+            $ref: '#/definitions/Error'
+
+  /stripe/update-stripe-card:
+    post:
+      security:
+        - OAuth2Security: []
+      x-wso2-curl: "curl https://localhost:9443/api/wso2/monetization/subscriptions/update-stripe-card"
+      x-wso2-request: |
+        GET https://localhost:9443/api/wso2/monetization/subscriptions/complete-checkout
+      summary: |
+        Update customer card details
+      description: |
+        The endpoint which is called to update a the card details of a customer
+      tags:
+        - Stripe
+      parameters:
+        - in: body
+          name: body
+          description: |
+            Complete checkout object.
+          required: true
+          schema:
+            $ref: '#/definitions/UpdateStripeCardRequestObject'
+      responses:
+        200:
+          description: |
+            OK.
+        400:
+          description: |
+            Bad Request.
+            Invalid request or validation error
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: |
+            Not Found.
+            The resource to be updated does not exist.
+          schema:
+            $ref: '#/definitions/Error'
+        412:
+          description: |
+            Precondition Failed.
+            The request has not been performed because one of the preconditions is not met.
+          schema:
+            $ref: '#/definitions/Error'
+
+  /stripe/setup-card-session/{apiId}:
+    post:
+      security:
+        - OAuth2Security: []
+      x-wso2-curl: "curl https://localhost:9443/api/wso2/monetization/stripe/setup-card-session"
+      x-wso2-request: |
+        GET https://localhost:9443/api/wso2/monetization/stripe/setup-card-session
+      summary: |
+        Start card updating session
+      description: |
+        The endpoint which is called to start update a the card details session
+      parameters:
+        - $ref: '#/parameters/apiId'
+      tags:
+        - Stripe
+      responses:
+        200:
+          description: |
+            OK.
+          schema:
+            $ref: '#/definitions/SetupCardSessionResponse'
+        400:
+          description: |
+            Bad Request.
+            Invalid request or validation error
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: |
+            Not Found.
+            The resource to be updated does not exist.
+          schema:
+            $ref: '#/definitions/Error'
+        412:
+          description: |
+            Precondition Failed.
+            The request has not been performed because one of the preconditions is not met.
+          schema:
+            $ref: '#/definitions/Error'
+
+  /stripe/billing-details:
+      get:
+        security:
+          - OAuth2Security: []
+        x-wso2-curl: "curl https://localhost:9443/api/wso2/monetization/stripe/billing-details"
+        x-wso2-request: |
+          GET https://localhost:9443/api/wso2/monetization/stripe/billing-details
+        summary: |
+          get stripe billing details
+        description: |
+          The endpoint which is called to get card/billing details
+        tags:
+          - Stripe
+        responses:
+          200:
+            description: |
+              OK.
+            schema:
+              $ref: '#/definitions/StripeCardDetailsResponse'
+          400:
+            description: |
+              Bad Request.
+              Invalid request or validation error
+            schema:
+              $ref: '#/definitions/Error'
+          404:
+            description: |
+              Not Found.
+              The resource to be updated does not exist.
+            schema:
+              $ref: '#/definitions/Error'
+          412:
+            description: |
+              Precondition Failed.
+              The request has not been performed because one of the preconditions is not met.
+            schema:
+              $ref: '#/definitions/Error'
+
+  /stripe/webhook/{webhookKey}:
+    post:
+      security:
+        - OAuth2Security: []
+      x-wso2-curl: "curl https://localhost:9443/api/wso2/monetization/stripe/webhook/keyname"
+      x-wso2-request: |
+        GET https://localhost:9443/api/wso2/monetization/stripe/webhook
+      summary: |
+        get stripe billing details
+      description: |
+        The endpoint which is called to get card/billing details
+      tags:
+        - Stripe
+      parameters:
+        - in: body
+          name: body
+          description: |
+            webhook.
+          required: false
+          schema:
+            type: string
+        - $ref: '#/parameters/webhookKey'
+
+      responses:
+        200:
+          description: |
+            OK.
+          schema:
+            $ref: '#/definitions/StripeCardDetailsResponse'
+        400:
+          description: |
+            Bad Request.
+            Invalid request or validation error
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: |
+            Not Found.
+            The resource to be updated does not exist.
+          schema:
+            $ref: '#/definitions/Error'
+        412:
+          description: |
+            Precondition Failed.
+            The request has not been performed because one of the preconditions is not met.
+          schema:
+            $ref: '#/definitions/Error'
+######################################################
+# Parameters - required by some of the APIs above
+######################################################
+parameters:
+
+  # API Identifier
+  # Specified as part of the path expression
+  apiId:
+    name: apiId
+    in: path
+    description: |
+      **API ID** consisting of the **UUID** of the API.
+    required: true
+    type: string
+
+  webhookKey:
+    name: webhookKey
+    in: path
+    description: |
+      webhook key corresponding to key entered in tenant-conf.json
+    required: true
+    type: string
+
+######################################################
+# The resources used by some of the APIs above within the message body
+######################################################
+definitions:
+  #-----------------------------------------------------
+  # The Error resource
+  #-----------------------------------------------------
+  Error:
+    title: Error object returned with 4XX HTTP status
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: integer
+        format: int64
+      message:
+        type: string
+        description: Error message.
+      description:
+        type: string
+        description: |
+          A detail description about the error message.
+      moreInfo:
+        type: string
+        description: |
+          Preferably an url with more details about the error.
+      error:
+        type: array
+        description: |
+          If there are more than one error list them out.
+          For example, list out validation errors by each field.
+        items:
+          $ref: '#/definitions/ErrorListItem'
+
+  #-----------------------------------------------------
+  # The Error List Item resource
+  #-----------------------------------------------------
+  ErrorListItem:
+    title: Description of individual errors that may have occurred during a request.
+    required:
+      - code
+      - message
+    properties:
+      code:
+        type: string
+      message:
+        type: string
+        description: |
+          Description about individual errors occurred
+
+  #-----------------------------------------------------
+  # The Complete checkout Request Schema
+  #-----------------------------------------------------
+  CompleteCheckoutRequestObject :
+    title: Complete checkout request object
+    required:
+      - sessionId
+      - workflowReferenceId
+    properties:
+      sessionId:
+        type: string
+        description: sessionId of session created in stripe
+      workflowReferenceId:
+        type: string
+        description: workflow external reference id stored to indentify a workflow
+
+  #-----------------------------------------------------
+  # Update Stripe Card Request Schema
+  #-----------------------------------------------------
+  UpdateStripeCardRequestObject :
+    title: Update stripe card
+    required:
+      - sessionId
+    properties:
+      sessionId:
+        type: string
+        description: sessionId of session created in stripe
+  #-----------------------------------------------------
+  # Update Stripe Card Response Schema
+  #-----------------------------------------------------
+  SetupCardSessionResponse :
+    title: Setup session response object
+    properties:
+      sessionId:
+        type: string
+        description: sessionId of session created in stripe
+      stripePublishableKey:
+        type: string
+        description: publishable key of the platform account
+
+  #-----------------------------------------------------
+  # Stripe Billing Details Response Schema
+  #-----------------------------------------------------
+  StripeCardDetailsResponse :
+    title: Billing details object
+    properties:
+      brand:
+        type: string
+        description: card type
+      expMonth:
+        type: number
+        description: expiry month
+      expYear:
+        type: number
+        description: expiry year
+      last4:
+        type: string
+        description: last 4 digits of the card
+
+  #-----------------------------------------------------
+  # Stripe Billing Details Response Schema
+  #-----------------------------------------------------
+  WebhookEvent :
+    title: web hook
+    properties:
+      event:
+        type: object
+        description: event
+#-----------------------------------------------------
+# END-OF-FILE
+#-----------------------------------------------------
