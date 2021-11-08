@@ -35,7 +35,7 @@
         "eslint-plugin-import": "^2.14.0",
         "eslint-plugin-jsx-a11y": "^6.1.2",
         "file-loader": "^0.11.2",
-        "graphiql": "^0.17.5",
+        "graphiql": "^1.4.7",
         "graphiql-explorer": "^0.5.1",
         "graphql": "^14.6.0",
         "isomorphic-fetch": "^2.2.1",
